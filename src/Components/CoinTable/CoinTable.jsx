@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { fetchCoinData } from "../../Services/fetchCoinData";
 import { useQuery } from "@tanstack/react-query";
 
-function CoinTable() {
+function CoinTable({ currency }) {
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["coins", page],
-    queryFn: () => fetchCoinData(page, "usd"),
+    queryKey: ["coins", page, currency],
+    queryFn: () => fetchCoinData(page, currency),
     queries: {
       // retry: 2,
       // retryDelay: 1000,
@@ -27,7 +27,7 @@ function CoinTable() {
       <div className="w-full bg-yellow-400 text-black flex py-2 px-2 font-semibold items-center justify-center">
         {/* {Header of the table} */}
         <div className="basis-[35%]">Coin</div>
-        <div className="basis-[25%]">Price</div>
+        <div className="basis-[25%]">Price({currency})</div>
         <div className="basis-[20%]">24hr change</div>
         <div className="basis-[20%]">Market Capital</div>
       </div>
