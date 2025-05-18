@@ -4,9 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 // import { useContext } from "react";
 // import { CurrencyContext } from "../../Context/CurrencyContext";
 import currencyStore from "../../state/store";
+import { useNavigate } from "react-router-dom";
 
 function CoinTable() {
   const { currency } = currencyStore();
+
+  const navigate = useNavigate();
 
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, error } = useQuery({
@@ -19,6 +22,10 @@ function CoinTable() {
       staleTime: 1000 * 60 * 2,
     },
   });
+
+  function handleCoinRedirect(id) {
+    navigate(`/details/${id}`);
+  }
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -42,6 +49,7 @@ function CoinTable() {
           data.map((coin) => {
             return (
               <div
+                onClick={() => handleCoinRedirect(coin.id)}
                 key={coin.id}
                 className="w-full bg-transparent text-white flex py-4 px-2 font-semibold items-center justify-between"
               >
